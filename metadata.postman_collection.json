@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "bb07067d-2d72-497c-b903-26050fc79d99",
+		"name": "metadata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/users",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Rafae2l\",\n\t\"email\": \"rafaesc@gmail.com\",\n\t\"password\": \"123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": "Get users"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/user/2",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Modificado\",\n\t\"email\": \"lol@gmail.com\",\n\t\"password\": \"ds@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"2"
+					]
+				},
+				"description": "Put user"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Ejemplo\",\n\t\"email\": \"eje\",\n\t\"password\": \"lol@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				},
+				"description": "Add user"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/users/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				},
+				"description": "Get user"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/user/2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"2"
+					]
+				},
+				"description": "Delete user"
+			},
+			"response": []
+		}
+	]
+}
