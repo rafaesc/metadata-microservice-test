@@ -1,0 +1,64 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.15.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+    id 'java'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'metadata-db'
+	version =  '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.0.RELEASE'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("com.h2database:h2")
+    compile("org.apache.commons:commons-lang3:3.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile('org.easytesting:fest-assert:1.4')
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+}
+import io.franzbecker.gradle.lombok.task.DelombokTask
+
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each {
+        inputs.dir(it)
+        args(it, "-d", outputDir)
+    }
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.11'
+}
+
+task "fullBuild" {
+    dependsOn "cleanTest", "test", "check", "build"
+}
