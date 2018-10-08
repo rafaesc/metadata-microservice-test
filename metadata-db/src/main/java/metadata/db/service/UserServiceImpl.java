@@ -1,5 +1,7 @@
 package metadata.db.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import metadata.db.model.UserEntity;
 import metadata.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.List;
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
+    private Log logger = LogFactory.getLog(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -42,17 +45,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, UserEntity userModify) {
+        logger.info(id);
         UserEntity user = this.findById(id);
 
-        if (userModify.getEmail().equals("")) {
+        String email = userModify.getEmail();
+        String name = userModify.getName();
+        String password = userModify.getPassword();
+
+        if (email != null && !email.isEmpty()) {
             user.setEmail(userModify.getEmail());
         }
 
-        if (userModify.getName().equals("")) {
+        if (name != null && !name.isEmpty()) {
             user.setName(userModify.getName());
         }
 
-        if (userModify.getPassword().equals("")) {
+        if (password != null && !password.isEmpty()) {
             user.setPassword(passwordEncoder().encode(user.getPassword()));
         }
 
