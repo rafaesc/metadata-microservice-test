@@ -10,4 +10,12 @@ import metadata.api.model.User;
 public interface UserService {
     public List<User> getUsers();
 
+    public User getUser(Long id);
+
+    public void saveUser(User user) throws Exception;
+
+    public void updateUser(Long id, User user) throws Exception;
+
+    public void deleteUser(Long id) throws Exception;
+
 }

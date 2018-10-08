@@ -1,24 +1,26 @@
 package metadata.db.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import metadata.db.model.UserEntity;
 import metadata.db.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service("userService")
+@Transactional
 public class UserServiceImpl implements UserService {
 
-    @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     public UserEntity findById(Long id) {
@@ -26,13 +28,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserEntity> findUsers() {
         return (List<UserEntity>) userRepository.findAll();
     }
 
     @Override
     public void saveUser(UserEntity user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
 
         userRepository.save(user);
     }
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userModify.getPassword().equals("")) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder().encode(user.getPassword()));
         }
 
         userRepository.save(user);

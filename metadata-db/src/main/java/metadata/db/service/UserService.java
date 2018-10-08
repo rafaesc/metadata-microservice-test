@@ -2,9 +2,10 @@ package metadata.db.service;
 
 import java.util.List;
 
+import metadata.db.model.UserEntity;
+
 import org.springframework.stereotype.Service;
 
-import metadata.db.model.UserEntity;
 
 @Service("userService")
 public interface UserService {
@@ -18,5 +19,4 @@ public interface UserService {
     public void updateUser(Long id, UserEntity user);
 
     public void deleteUser(Long id);
-
 }

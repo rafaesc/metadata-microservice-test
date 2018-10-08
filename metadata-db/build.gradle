@@ -1,17 +1,16 @@
 buildscript {
-    ext {
-        springBootVersion = '1.5.15.RELEASE'
-    }
-    repositories {
-        mavenCentral()
+	ext {
+		springBootVersion = '1.5.15.RELEASE'
+	}
+	repositories {
+		mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
-    }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
 
 plugins {
@@ -21,54 +20,30 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'jacoco'
-apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.springframework.boot'
 
-group = 'metadata'
-version = '0.0.1-SNAPSHOT'
+jar {
+	baseName = 'metadata-db'
+	version =  '0.0.1-SNAPSHOT'
+}
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-}
-
-ext {
-    springCloudVersion = 'Edgware.SR4'
-}
-
-configurations {
-    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	mavenCentral()
 }
 
 dependencies {
-    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.5.RELEASE'
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-aop')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-log4j2')
-    compile('org.springframework.cloud:spring-cloud-starter-config')
-    compile('io.springfox:springfox-swagger2:2.7.0')
-    compile('io.springfox:springfox-data-rest:2.7.0')
-    compile('io.springfox:springfox-swagger-ui:2.7.0')
-    compile('mysql:mysql-connector-java')
-    compile group: 'commons-dbcp', name: 'commons-dbcp', version:'1.4'
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-    compile("org.apache.commons:commons-lang3:3.5")
-    compileOnly('org.projectlombok:lombok')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('io.rest-assured:rest-assured:3.1.1')
-    testCompile('com.h2database:h2')
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.0.RELEASE'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("com.h2database:h2")
+    compile("org.apache.commons:commons-lang3:3.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile('org.easytesting:fest-assert:1.4')
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
 }
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
 task delombok(type: DelombokTask, dependsOn: compileJava) {
@@ -80,19 +55,10 @@ task delombok(type: DelombokTask, dependsOn: compileJava) {
     }
 }
 
-
-jacoco {
-    toolVersion = "0.8.1"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.11'
 }
 
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
-    }
+task "fullBuild" {
+    dependsOn "cleanTest", "test", "check", "build"
 }
-test
-        { }
